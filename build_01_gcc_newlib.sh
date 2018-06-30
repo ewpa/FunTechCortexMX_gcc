@@ -6,7 +6,7 @@ source include.sh
 ### GCC #########
 #################
 
-ver_gcc=gcc-4.8.5
+ver_gcc=gcc-4.9.4
 arch_url=ftp://ftp.gnu.org/gnu/gcc/$ver_gcc/$ver_gcc.tar.bz2
 arch_dir=$ver_gcc
 arch_name=$ver_gcc.tar.bz2
@@ -41,15 +41,15 @@ did_it_work $?
              MAKEINFO=missing \
              --prefix=$TOOLPATH_STM32  \
              --enable-interwork  \
-             --enable-multilib  \
+             --disable-multilib  \
              --enable-languages="c,c++"  \
              --with-newlib  \
              --without-headers  \
              --disable-shared  \
              --with-gnu-as  \
              --with-float=soft \
-             --with-cpu=cortex-m3 \
-             --with-tune=cortex-m3 \
+             --with-cpu=cortex-m0 \
+             --with-tune=cortex-m0 \
              --with-mode=thumb \
              --disable-libssp \
              --with-gnu-ld \
@@ -138,16 +138,14 @@ make $PARALLEL CFLAGS_FOR_TARGET="-ffunction-sections \
                         -D__OPTIMIZE_SIZE__ \
                         -Os \
                         -fomit-frame-pointer \
-                        -mcpu=cortex-m3 \
+                        -mcpu=cortex-m0 \
                         -mthumb \
-                        -mfix-cortex-m3-ldrd \
                         -mfloat-abi=softfp \
-                        -D__thumb2__ \
+                        -D__thumb__ \
                         -D__BUFSIZ__=256" \
-               CCASFLAGS="-mcpu=cortex-m3 \
+               CCASFLAGS="-mcpu=cortex-m0 \
                           -mthumb \
-                          -mfix-cortex-m3-ldrd \
-                          -D__thumb2__" 
+                          -D__thumb__" 
 did_it_work $? 
 
 make install 
@@ -162,9 +160,9 @@ cd $stm_dir_tools
 did_it_work $? 
 cd $ver_gcc/build
 did_it_work $? 
-make $PARALLEL CFLAGS="-mcpu=cortex-m3 -mthumb" \
-     CXXFLAGS="-mcpu=cortex-m3 -mthumb" \
-     LIBCXXFLAGS="-mcpu=cortex-m3 -mthumb" \
+make $PARALLEL CFLAGS="-mcpu=cortex-m0 -mthumb" \
+     CXXFLAGS="-mcpu=cortex-m0 -mthumb" \
+     LIBCXXFLAGS="-mcpu=cortex-m0 -mthumb" \
      all 
 did_it_work $? 
 
